@@ -1,0 +1,79 @@
+{
+  "name": "use-cursor",
+  "version": "0.1.79",
+  "homepage": "https://github.com/alex-cory/use-cursor.git",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alex-cory/use-cursor.git"
+  },
+  "dependencies": {
+    "use-ssr": "^1.0.18"
+  },
+  "peerDependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^8.0.1",
+    "@testing-library/react-hooks": "^1.1.0",
+    "@types/jest": "^24.0.12",
+    "@types/node": "^12.0.10",
+    "@types/react": "16.8.23",
+    "@types/react-dom": "^16.8.4",
+    "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/parser": "^1.11.0",
+    "eslint": "^6.0.1",
+    "eslint-plugin-jest": "22.15.0",
+    "eslint-plugin-react": "^7.14.2",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "eslint-watch": "^5.1.2",
+    "eslint-config-prettier": "4.3.0",
+    "eslint-plugin-jest-formatting": "0.1.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-sonarjs": "^0.4.0",
+    "jest": "^24.7.1",
+    "prettier": "^1.18.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-test-renderer": "^16.8.6",
+    "typescript": "^3.4.5",
+    "watch": "^1.0.2"
+  },
+  "scripts": {
+    "prepublishOnly": "yarn build # runs before publish",
+    "build": "rm -rf dist && tsc --module CommonJS",
+    "build:watch": "rm -rf dist && tsc -w --module CommonJS",
+    "tsc": "tsc -p . --noEmit && tsc -p ./src/__tests__",
+    "test:browser": "yarn tsc && jest -c ./config/jest.config.js --env=jsdom",
+    "test:browser:watch": "yarn tsc && jest --watch -c ./config/jest.config.js --env=jsdom",
+    "test:server": "yarn tsc && jest -c ./config/jest.config.js --env=node",
+    "test:server:watch": "yarn tsc && jest --watch -c ./config/jest.config.js --env=node",
+    "test:watch": "yarn test:browser:watch && yarn test:server:watch",
+    "test": "yarn test:browser && yarn test:server",
+    "clean": "npm prune; yarn cache clean; rm -rf ./node_modules package-lock.json yarn.lock; yarn",
+    "lint": "eslint ./src/**/*.{ts,tsx}",
+    "lint:fix": "npm run lint -- --fix",
+    "lint:watch": "watch 'yarn lint'"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "react hook",
+    "react-hook",
+    "use",
+    "cursor",
+    "mouse",
+    "use-cursor",
+    "use-mouse",
+    "hook",
+    "react",
+    "useMouse",
+    "useCursor",
+    "mouse-events",
+    "events"
+  ]
+}
