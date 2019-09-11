@@ -48,6 +48,7 @@
   <sup>
     🐭 React hook for customizing the mouse
   </sup>
+  ⚠️This package is currently WIP and not even published to npm⚠️
 </div>
 
 <br/>
