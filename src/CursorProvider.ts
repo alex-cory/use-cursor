@@ -1,14 +1,12 @@
-import React, { useEffect, useState, useRef, useCallback, createContext, useContext } from 'react'
-import { CursorContext } from './CursorContext'
+import { useEffect, useCallback, FunctionComponent } from 'react'
+import { CursorContext, CursorParts } from './CursorContext'
 import styled, { createGlobalStyle } from 'styled-components'
-// import { Mouse, Follower } from '..'
-
 
 export const GlobalStyle = createGlobalStyle`
   a[href], input[type='submit'], input[type='image'], label[for], select, button, .pointer {
     cursor: none;
   }
-`;
+`
 
 const Outer = styled.div`
   position: absolute;
@@ -17,21 +15,36 @@ const Outer = styled.div`
   display: grid;
   cursor: none;
 `
+import { Cursor, CursorPart } from './useCursor'
 
+type CursorComponent = {
+  component: FunctionComponent,
+  ref: HTMLElement | undefined
+}
+
+type Cool = {
+  components: { [K in keyof Cursor]: CursorComponent }
+  theCursor: { [K in keyof Cursor]: Omit<CursorPart, 'component'|'move'> }
+  moves: (() => void)[]
+}
+
+type Test = {
+  [K in keyof Cursor]: CursorPart
+}
 // BUGFIX: when scrolling, the mouse doesn't scroll down
 // like it should
 export const CursorProvider = ({ cursor, children }) => {
   if (!cursor) throw Error('Must have a cursor passed into the <CursorProvider cursor={cursor} />')
   if (!cursor.mouse) throw Error("'mouse' is required as a key in the 'cursor' object")
-  const { components, theCursor, moves } = Object.entries(cursor).reduce(
-    (acc, [key /* i.e. 'mouse' and 'follower' */, cursorPart]) => {
+  const { components, theCursor, moves } = Object.entries<Cursor>(cursor).reduce(
+    (acc, [key /* i.e. 'mouse' and 'follower' */, cursorPart]): Cool => {
       const { component, move, ...rest } = cursorPart
       acc.components[key] = {
         component,
         ref: rest.ref
-      }
+      } as CursorComponent
       if (key !== 'mouse') acc.moves.push(move)
-      acc.theCursor[key] = rest
+      acc.theCursor[key] = rest as Omit<CursorPart, 'component'|'move'>
       return acc
     },
     {
@@ -44,7 +57,7 @@ export const CursorProvider = ({ cursor, children }) => {
   // console.log('COMPS: ', components)
   const { mouse } = cursor
 
-  const handleMouseMove = e => {
+  const handleMouseMove = (e: MouseEvent) => {
     mouse.x.current = e.pageX
     mouse.y.current = e.pageY
   }
@@ -63,7 +76,7 @@ export const CursorProvider = ({ cursor, children }) => {
   useEffect(() => {
     moveMouse()
     for (var move of moves) move()
-  }, [theCursor, moves, moveMouse])
+  }, [moves, moveMouse])
 
   return (
     <CursorContext.Provider value={theCursor}>
