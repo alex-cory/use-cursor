@@ -71,6 +71,10 @@ Features
 <!-- - 1 dependency ([use-ssr](https://github.com/alex-cory/use-ssr)) -->
 - make custom trendy mouses
 
+Examples
+--------
+- [Basic Usage](https://codesandbox.io/s/usecursor-oey2r)
+
 Usage
 -----
 
