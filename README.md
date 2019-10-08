@@ -89,7 +89,7 @@ Usage
 <details open><summary><b>Basic Usage <code>useCursor</code></b></summary>
 
 ```js
-import { CursorProvider } from 'use-cursor'
+import { CursorProvider, useCursor } from 'use-cursor'
 
 const Mouse = styled.div`
   position: absolute;
@@ -114,46 +114,27 @@ const Follower = styled.div`
 `
 
 function App() {
-  const cursor = {
-    mouse: {
-      isActive: false,
-      setActive() {},
-      x: useRef(0),
-      y: useRef(0),
-      ref: useRef(),
-      ease: 1,
-      isMoving: useRef(true),
-      component: Mouse,
-    },
-    follower: {
-      isActive: false,
-      setActive() {},
-      x: useRef(0),
-      y: useRef(0),
-      ref: useRef(),
-      ease: 0.1,
-      isMoving: useRef(true),
-      component: Follower,
-    }
+  const mouse = {
+    isActive: false,
+    x: useRef(0),
+    y: useRef(0),
+    ref: useRef(),
+    ease: 1,
+    isMoving: useRef(true),
+    component: Mouse,
+  }
+  const follower = {
+    isActive: false,
+    x: useRef(0),
+    y: useRef(0),
+    ref: useRef(),
+    ease: 0.1,
+    isMoving: useRef(true),
+    component: Follower,
   }
 
-  const { mouse, follower } = cursor
-  const moveFollower = useCallback(() => {
-    if (!(follower.ref && follower.ref.current)) return
-    if (follower.isMoving.current) {
-      const {left, top, width, height} = follower.ref.current.getBoundingClientRect()
-      const dX = mouse.x.current - (left + width / 2)
-      const dY = mouse.y.current - (top + window.scrollY + height / 2)
-      follower.x.current += dX * follower.ease
-      follower.y.current += dY * follower.ease
-      follower.ref.current.style.transform = `translate3d(${follower.x.current}px, ${follower.y.current}px, 0)`
-    }
-    requestAnimationFrame(moveFollower)
-  }, [follower.ease, follower.isMoving, follower.ref, follower.x, follower.y, mouse.x, mouse.y])
-  cursor.follower.move = moveFollower
-
   return (
-    <CursorProvider cursor={cursor}>
+    <CursorProvider cursor={{ mouse, follower }}>
       <Logo />
     </CursorProvider>
   )
@@ -161,25 +142,17 @@ function App() {
 
 const Logo = () => {
   const cursor = useCursor({
-    onCursorEnter(e, { follower }) {
-      follower.isMoving.current = false
-      const hoveredEl = e.currentTarget
-      const { top, left, width, height } = hoveredEl.getBoundingClientRect()
-      const increase = 400
-      const followerRadius = increase / 2
-      const x = left - (followerRadius - width / 2)
-      const y = top - (followerRadius - (height / 2) - window.scrollY - 10)
+    onMouseEnter({ follower }) {
+      const increase = 120
       follower.ref.current.style = `
         width: ${increase}px;
         height: ${increase}px;
         border-color: rgb(137,183,44);
         mix-blend-mode: inherit;
         transition: width .55s, height .55s;
-        transform: translate3d(${x}px, ${y}px, 0)
       `
     },
-    onCursorLeave(e, { follower }) {
-      follower.isMoving.current = true
+    onMouseLeave({ follower }) {
       follower.ref.current.style = `
         transition: width .55s, height .55s;
         width: 60px;
@@ -188,13 +161,7 @@ const Logo = () => {
     }
   })
 
-  return (
-    <img
-      onMouseEnter={cursor.onCursorEnter}
-      onMouseLeave={cursor.onCursorLeave}
-      src='https://picsum.photos/400'
-    />
-  )
+  return <img {...cursor.bind} src='https://picsum.photos/400' />
 }
 
 ```
