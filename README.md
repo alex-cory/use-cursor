@@ -215,6 +215,14 @@ Todos
 ------
  - [ ] tests
  - [ ] codesandbox examples
+  - [example 1 todo](http://www.andreadlabarile.it/works/molino)
+  - [example 2 todo](https://phoenix.cool)
+  - [example 3 todo](https://codepen.io/tamm/pen/LIFam)
+  - [example 4 todo](https://github.com/tholman/cursor-effects)
+  - [ideas](https://medium.com/@dailyfire/cursor-trails-3-simple-css-tricks-to-add-to-any-website-part-1-64750798583c)
+  - [canvas idea](https://codepen.io/InsideDown/pen/rjPEdM)
+  - [canvas 2](https://codepen.io/ninivert/pen/ZpEQBR)
+  
  - [ ] ssr testing
  - [ ] typescript support
 
