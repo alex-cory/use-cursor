@@ -180,6 +180,7 @@ Overview
 
 Todos
 ------
+ - [ ] take a look at [`useMouse`](https://github.com/streamich/react-use/blob/master/src/useMouse.ts)
  - [ ] tests
  - [ ] codesandbox examples
   - [example 1 todo](http://www.andreadlabarile.it/works/molino)
